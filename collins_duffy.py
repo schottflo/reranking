@@ -97,9 +97,37 @@ def production_not_valid(prod, t, span, sent_length):
     """
     return prod == t.productions()[0] and span != sent_length
 
+print(nltk.ParentedTree.fromstring(
+            "(S (NP (D the) (N dog)) (VP (V chased) (NP (D the) (N cat))))").pretty_print())
+
+num_matching_trees = 0
+for subtree1 in t1.subtrees():
+    print(subtree1)
+        # for subtree2 in t2.subtrees():
+        #     print(subtree2)
+        #     if subtree1 == subtree2:
+        #         num_matching_trees += 1
+
+## We are missing the ones that had with only non terminal productions
 
 
+print(num_matching_trees)
 
+# def extract_longest_subtree(subtree1, subtree2):
+#     prev_prod_1 = [subtree1[(0,)].productions()[0], subtree1[(1,)].productions()[0]]
+#     prev_prod_2 = [subtree2[(0,)].productions()[0], subtree2[(1,)].productions()[0]]
+#
+#     if prev_prod_1[0] != prev_prod_2[0] and prev_prod_1[1] != prev_prod_2[1]:
+#         return prev_prod_1, prev_prod_2
+#
+#     if prev_prod_1[0] == prev_prod_2[0] and prev_prod_1[1] == prev_prod_2[1]:
+#
+#         while type(prev_prod_1[0]) != str and type(prev_prod_1[1]) != str:
+#
+#             subtree = subtree1[(0,)]
+#
+#
+#     return
 
 
 # t1[t1.treeposition_spanning_leaves(start=3, end=7)].pretty_print()
@@ -146,24 +174,19 @@ def compute_num_matching_subtrees(t1, t2):
                         prev_prod_2_1 = subtree2[(0,)].productions()[0]
                         prev_prod_2_2 = subtree2[(1,)].productions()[0]
 
-                        if prev_prod_1_1 == prev_prod_2_1 and prev_prod_1_2 == prev_prod_2_2:
-
-                            # if DP_table[prev_prod_1_1] > 1:
-                            #
-                            #     print("INTERESTING1")
-                            #     print(prev_prod_1_1)
-                            #     print(DP_table[prev_prod_1_1])
-                            #     print("INTERESTING1")
-                            #
-                            # if DP_table[prev_prod_1_2] > 1:
-                            #
-                            #     print("INTERESTING2")
-                            #     print(prev_prod_1_2)
-                            #     print(DP_table[prev_prod_1_2])
-                            #     print("INTERESTING2")
+                        if prev_prod_1_1 == prev_prod_2_1 and prev_prod_1_2 == prev_prod_2_2: # We make the assumption that is the lowest layer already
 
                             DP_table[prod_1] += (1 + DP_table[prev_prod_1_1]) * (1 + DP_table[prev_prod_1_2])
                             #res += (1 + DP_table[prev_prod_1_1]) * (1 + DP_table[prev_prod_1_2])
+
+                            # concatenate the production to form a tree
+                            if (prod_1, prev_prod_1_1, prev_prod_1_2) not in DP_table.keys:
+                                DP_table[(prod_1, prev_prod_1_1, prev_prod_1_2)] = (1 + DP_table[prev_prod_1_1]) * (1 + DP_table[prev_prod_1_2])
+                            else:
+                                DP_table[(prod_1, prev_prod_1_1, prev_prod_1_2)] += (1 + DP_table[prev_prod_1_1]) * (
+                                            1 + DP_table[prev_prod_1_2])
+
+
                             continue
 
                         if prev_prod_1_1 == prev_prod_2_1:

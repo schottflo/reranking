@@ -69,10 +69,9 @@ def compute_num_matching_subtrees(t1, t2):
             DP_table[key] *= value
 
     print(DP_table)
-    print(sum(DP_table.values()))
+    return(sum(DP_table.values()))
 
 if __name__ == "__main__":
-
     t1 = nltk.ParentedTree.fromstring(
         "(S (NP (D the) (N dog)) (VP (V chased) (NP (NP (D the) (N cat)) (NP (Conj and) (NP (D the) (N mouse))))))")
     t2 = nltk.ParentedTree.fromstring("(S (NP (D the) (N woman)) (AdvP (Adv thoughtfully) (VP (V cooks) (NP meat))))")
