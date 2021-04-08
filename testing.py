@@ -1,6 +1,6 @@
 import unittest
 import nltk
-from collins_duffy import compute_num_matching_subtrees
+from num_matching_subtrees import compute_num_matching_subtrees
 
 class TestNumSubtrees(unittest.TestCase):
 
@@ -27,11 +27,10 @@ class TestNumSubtrees(unittest.TestCase):
             "(S (NP (D the) (N dog)) (VP (V chased) (NP (NP (D the) (N cat)) (NP (Conj and) (NP (D the) (N mouse))))))")
         t2 = nltk.ParentedTree.fromstring(
             "(S (NP (D the) (N woman)) (VP (V cooks) (NP (Adj nice) (NP meat))))")
-        self.assertEqual(compute_num_matching_subtrees(t1=t1, t2=t2), 13, "Should be 14")
+        self.assertEqual(compute_num_matching_subtrees(t1=t1, t2=t2), 14, "Should be 14")
 
 if __name__ == '__main__':
     unittest.main()
-    unittest.trees_of_same_size()
 
 
 
