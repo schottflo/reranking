@@ -1,6 +1,6 @@
-import nltk
+from nltk import ParentedTree
 
-def compute_num_matching_subtrees(t1, t2):
+def compute_num_matching_subtrees_dp(t1, t2):
     """
     Given two trees (in CNF) returns the number of matching subtrees.
 
@@ -13,64 +13,47 @@ def compute_num_matching_subtrees(t1, t2):
     t1.pretty_print()
     t2.pretty_print()
 
-    # Extract all productions
-    prods_1 = t1.productions()
-    prods_2 = t2.productions()
+    DP_table = {}
+    for pos in t1.treepositions(order="postorder"):
+        tr = t1[pos]
+        node_pos = pos
+        if type(tr) != str:  # and len(tr.productions()) > 1
+            node = tr.productions()[0].lhs()
+        else:
+            node = tr
+        DP_table[(node, node_pos)] = 0
 
-    # Initialize the DP table (still a dictionary)
-    DP_table = {prod: 0 for prod in set(prods_1 + prods_2)}
-    counts = DP_table.copy()
-
-    for prod_1 in prods_1:
-        if prod_1.is_lexical():
-            for prod_2 in prods_2:
-                if prod_1 == prod_2:
-                    DP_table[prod_1] = 1
-                    counts[prod_1] += 1
-
-    # Algorithm
     for pos1 in t1.treepositions(order="postorder"):
         subtree1 = t1[pos1]
-        if type(subtree1) != str and len(subtree1.productions()) > 1: # first condition excludes terminals, the second pre-terminals
-            prod_1 = subtree1.productions()[0]
+        if type(subtree1) != str:
+            node1 = subtree1.productions()[0].lhs()
+            prod1 = subtree1.productions()[0]
 
             for pos2 in t2.treepositions(order="postorder"):
                 subtree2 = t2[pos2]
-                if type(subtree2) != str and len(subtree2.productions()) > 1:
-                    prod_2 = subtree2.productions()[0]
+                if type(subtree2) != str:
+                    node2 = subtree2.productions()[0].lhs()
+                    prod2 = subtree2.productions()[0]
 
-                    if prod_1 == prod_2:
+                    if node1 == node2 and prod1 == prod2:
+                        child_1 = prod1.rhs()[0]
 
-                        prev_prod_1_1 = subtree1[(0,)].productions()[0]
-                        prev_prod_1_2 = subtree1[(1,)].productions()[0]
+                        pos_child_1 = pos1 + (0,)
+                        pos_child_2 = pos1 + (1,)
+                        try:
+                            child_2 = prod1.rhs()[1]
+                            DP_table[(node1, pos1)] += (1 + DP_table[(child_1, pos_child_1)]) * (
+                                    1 + DP_table[(child_2, pos_child_2)])
+                        except:
+                            DP_table[(node1, pos1)] += (1 + DP_table[(child_1, pos_child_1)])
 
-                        prev_prod_2_1 = subtree2[(0,)].productions()[0]
-                        prev_prod_2_2 = subtree2[(1,)].productions()[0]
-
-                        if prev_prod_1_1 == prev_prod_2_1 and prev_prod_1_2 == prev_prod_2_2:
-                            DP_table[prod_1] += (1 + DP_table[prev_prod_1_1]) * (1 + DP_table[prev_prod_1_2])
-                            continue
-
-                        if prev_prod_1_1 == prev_prod_2_1:
-                            DP_table[prod_1] += (1 + DP_table[prev_prod_1_1])
-
-                        elif prev_prod_1_2 == prev_prod_2_2:
-                            DP_table[prod_1] += (1 + DP_table[prev_prod_1_2])
-
-                        else:
-                            DP_table[prod_1] += 1
-
-    # Accounting for terminal productions that occur more than once
-    for key, value in counts.items():
-        if value > 1:
-            DP_table[key] *= value
 
     print(DP_table)
     return sum(DP_table.values())
 
-
 if __name__ == "__main__":
-    t1 = nltk.ParentedTree.fromstring(
+    t1 = ParentedTree.fromstring(
         "(S (NP (D the) (N dog)) (VP (V chased) (NP (NP (D the) (N cat)) (NP (Conj and) (NP (D the) (N mouse))))))")
-    t2 = nltk.ParentedTree.fromstring("(S (NP (D the) (N woman)) (AdvP (Adv thoughtfully) (VP (V cooks) (NP meat))))")
-    compute_num_matching_subtrees(t1=t1, t2=t2)
+    t2 = ParentedTree.fromstring(
+        "(S (NP (D the) (N woman)) (VP (V cooks) (NP (Adj nice) (NP meat))))")
+    print(compute_num_matching_subtrees_dp(t1=t1, t2=t2))
