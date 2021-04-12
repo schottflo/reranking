@@ -1,4 +1,5 @@
 import unittest
+import time
 from nltk import Tree, ParentedTree
 from num_matching_subtrees import compute_num_matching_subtrees_dp
 
@@ -79,43 +80,84 @@ class TestNumSubtrees(unittest.TestCase):
     def trees_of_same_size(self):
         t1 = ParentedTree.fromstring("(S (NP (D the) (N man)) (VP (V eats) (NP fish)))")
         t2 = ParentedTree.fromstring("(S (NP (D the) (N woman)) (VP (V cooks) (NP meat)))")
-        res, trees = compute_num_matching_subtrees_naive(t1, t2)
-        self.assertEqual(compute_num_matching_subtrees_dp(t1=t1, t2=t2), res, f"Should be {res}")
+
+        start_naive = time.time()
+        res_naive, trees_naive = compute_num_matching_subtrees_naive(t1, t2)
+        end_naive = time.time()
+
+        start_dp = time.time()
+        res_dp = compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+        end_dp = time.time()
+
+        self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")
         print("\n")
         print("--- Expected matching trees ---")
-        print(trees)
+        print(trees_naive, "\n")
+        print("Naive time:", end_naive - start_naive)
+        print("DP time:", end_dp - start_dp)
 
     def trees_of_different_size(self):
         t1 = ParentedTree.fromstring("(S (NP (D the) (N man)) (VP (V eats) (NP fish)))")
         t2 = ParentedTree.fromstring(
             "(S (NP (D the) (N woman)) (AdvP (Adv thoughtfully) (VP (V cooks) (NP meat))))")
-        res, trees = compute_num_matching_subtrees_naive(t1, t2)
-        self.assertEqual(compute_num_matching_subtrees_dp(t1=t1, t2=t2), res, f"Should be {res}")
+
+        start_naive = time.time()
+        res_naive, trees_naive = compute_num_matching_subtrees_naive(t1, t2)
+        end_naive = time.time()
+
+        start_dp = time.time()
+        res_dp = compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+        end_dp = time.time()
+
+        self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")
         print("\n")
         print("--- Expected matching trees ---")
-        print(trees)
+        print(trees_naive, "\n")
+        print("Naive time:", end_naive - start_naive)
+        print("DP time:", end_dp - start_dp)
 
     def trees_with_duplicate_subtrees(self):
         t1 = ParentedTree.fromstring(
                 "(S (NP (D the) (N dog)) (VP (V chased) (NP (D the) (N cat))))")
         t2 = ParentedTree.fromstring(
             "(S (NP (D the) (N woman)) (AdvP (Adv thoughtfully) (VP (V cooks) (NP meat))))")
-        res, trees = compute_num_matching_subtrees_naive(t1, t2)
-        self.assertEqual(compute_num_matching_subtrees_dp(t1=t1, t2=t2), res, f"Should be {res}")
+
+        start_naive = time.time()
+        res_naive, trees_naive = compute_num_matching_subtrees_naive(t1, t2)
+        end_naive = time.time()
+
+        start_dp = time.time()
+        res_dp = compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+        end_dp = time.time()
+
+        self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")
         print("\n")
         print("--- Expected matching trees ---")
-        print(trees)
+        print(trees_naive, "\n")
+        print("Naive time:", end_naive - start_naive)
+        print("DP time:", end_dp - start_dp)
 
     def trees_with_duplicate_structures(self):
         t1 = ParentedTree.fromstring(
             "(S (NP (D the) (N dog)) (VP (V chased) (NP (NP (D the) (N cat)) (NP (Conj and) (NP (D the) (N mouse))))))")
         t2 = ParentedTree.fromstring(
             "(S (NP (D the) (N woman)) (VP (V cooks) (NP (Adj nice) (NP meat))))")
-        res, trees = compute_num_matching_subtrees_naive(t1, t2)
-        self.assertEqual(compute_num_matching_subtrees_dp(t1=t1, t2=t2), res, f"Should be {res}")
+
+        start_naive = time.time()
+        res_naive, trees_naive = compute_num_matching_subtrees_naive(t1, t2)
+        end_naive = time.time()
+
+        start_dp = time.time()
+        res_dp = compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+        end_dp = time.time()
+
+        self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")
         print("\n")
         print("--- Expected matching trees ---")
-        print(trees)
+        print(trees_naive, "\n")
+        print("Naive time:", end_naive - start_naive)
+        print("DP time:", end_dp - start_dp)
+
 
 if __name__ == '__main__':
     unittest.main()
