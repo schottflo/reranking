@@ -1,6 +1,5 @@
 import unittest
 import time
-from itertools import combinations
 from collections import defaultdict
 from nltk import Tree, ParentedTree
 from num_matching_subtrees import compute_num_matching_subtrees_dp
