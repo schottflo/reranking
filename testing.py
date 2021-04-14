@@ -1,8 +1,10 @@
 import unittest
 import time
+from itertools import combinations
 from collections import defaultdict
 from nltk import Tree, ParentedTree
 from num_matching_subtrees import compute_num_matching_subtrees_dp
+import parse_tree_generator
 
 def _extract_all_subtrees(tree):
     """
@@ -86,13 +88,39 @@ def compute_num_matching_subtrees_naive(t1, t2):
     for s1 in subtrees1:
         for s2 in subtrees2:
             if s1 == s2:
-                print(s1)
                 matching_subtrees[str(s1)] += 1
+
+    # Bit of code for runtime comparisons (since it is leaner and doesn't keep track which subtrees matched)
+    # count = 0
+    # for s1 in subtrees1:
+    #     for s2 in subtrees2:
+    #         if s1 == s2:
+    #             count += 1
+    # matching_subtrees = []
 
     count = sum(matching_subtrees.values())
     return count, matching_subtrees
 
 class TestNumSubtrees(unittest.TestCase):
+
+    def random_trees(self):
+        t1, t2 = parse_tree_generator.generate_random_parse_trees(num_trees=2)
+
+        start_dp = time.time()
+        res_dp = compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+        end_dp = time.time()
+
+        start_naive = time.time()
+        res_naive, trees_naive = compute_num_matching_subtrees_naive(t1=t1, t2=t2)
+        end_naive = time.time()
+
+        print("\n")
+        print("--- Expected matching trees ---")
+        print(trees_naive, "\n")
+        print("Naive time:", end_naive - start_naive)
+        print("DP time:", end_dp - start_dp)
+
+        self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")
 
     def trees_of_same_size(self):
         t1 = ParentedTree.fromstring("(S (NP (D the) (N man)) (VP (V eats) (NP fish)))")
@@ -139,10 +167,8 @@ class TestNumSubtrees(unittest.TestCase):
     def trees_with_duplicate_subtrees(self):
         t1 = ParentedTree.fromstring(
                 "(S (NP (D the) (N dog)) (VP (V chased) (NP (D the) (N cat))))")
-        # t2 = ParentedTree.fromstring(
-        #     "(S (NP (D the) (N woman)) (AdvP (Adv thoughtfully) (VP (V cooks) (NP meat))))")
         t2 = ParentedTree.fromstring(
-            "(S (NP (D the) (N dog)) (VP (V insulted) (NP (D the) (N cat))))")
+            "(S (NP (D the) (N woman)) (AdvP (Adv thoughtfully) (VP (V cooks) (NP meat))))")
 
         start_naive = time.time()
         res_naive, trees_naive = compute_num_matching_subtrees_naive(t1, t2)
@@ -161,11 +187,11 @@ class TestNumSubtrees(unittest.TestCase):
         self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")
 
 
-    def trees_with_duplicate_structures(self):
+    def similar_trees(self):
         t1 = ParentedTree.fromstring(
             "(S (NP (D the) (N dog)) (VP (V chased) (NP (NP (D the) (N cat)) (NP (Conj and) (NP (D the) (N mouse))))))")
         t2 = ParentedTree.fromstring(
-            "(S (NP (D the) (N woman)) (VP (V cooks) (NP (Adj nice) (NP meat))))")
+            "(S (NP (D the) (N dog)) (VP (V chased) (NP (NP (D the) (N mom)) (NP (Conj and) (NP (D the) (N mouse))))))")
 
         start_naive = time.time()
         res_naive, trees_naive = compute_num_matching_subtrees_naive(t1, t2)
