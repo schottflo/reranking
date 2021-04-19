@@ -2,7 +2,7 @@ from nltk import ParentedTree
 
 def compute_num_matching_subtrees_dp(t1, t2):
     """
-    Given two trees (in CNF) returns the number of matching subtrees.
+    Given two trees (in CNF), this function returns the number of matching subtrees.
 
     :param t1: nltk.Tree
     :param t2: nltk.Tree
@@ -70,6 +70,9 @@ def compute_num_matching_subtrees_dp(t1, t2):
     return sum(DP_table.values())
 
 if __name__ == "__main__":
+    t = ParentedTree.fromstring("(D the)")
+    print(t.height())
+
     t1 = ParentedTree.fromstring(
         "(S (NP (D the) (N dog)) (VP (V chased) (NP (D the) (N cat))))")
     t2 = ParentedTree.fromstring(
