@@ -3,7 +3,7 @@ import string
 from cfgen import GrammarModel, clean_output_text
 from stat_parser import parser
 
-PATH = os.getcwd() + "\corpora"
+PATH = os.getcwd()
 
 def generate_random_sentence(grammar, ref_sentence):
     """
@@ -36,7 +36,6 @@ def parse_sentence(sentence):
 
     # Transform parse into NLTK tree
     parse_tree = parser.nltk_tree(parse)
-
     return parse_tree
 
 def generate_random_parse_trees(num_trees=2, corpus_file="war_and_peace_short.txt"):
