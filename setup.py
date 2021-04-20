@@ -8,7 +8,8 @@ setup(name='bayesian-nlp',
       install_requires=[
           'numpy',
           'nltk',
-          'cfgen'
+          'pyStatParser',
+          'cfgen',
       ],
       packages=find_packages(),
       )
