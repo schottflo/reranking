@@ -8,13 +8,10 @@ def compute_num_matching_subtrees_dp(t1, t2):
     :param t2: nltk.Tree
     :return: int
     """
-    t1.pretty_print()
-    t2.pretty_print()
-
-    DP_table = {}
-
     # Initialize the DP table: it needs specification by the position of the match in each tree (ow: you overcount)
     # General remark on the DP_table: Always need to cast the first element of the tuple key as a str
+
+    DP_table = {}
 
     for pos_t1 in t1.treepositions(order="postorder"): # "postorder" means bottom-up
         subtree = t1[pos_t1]
