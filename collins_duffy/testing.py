@@ -1,10 +1,8 @@
 import time
 import unittest
-import sys
-sys.path.append('../')
 
-from collins_duffy import brute_force
-from collins_duffy import dynamic_program
+import brute_force
+import dynamic_program
 import parse_tree_gen
 from nltk import ParentedTree
 
