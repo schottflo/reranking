@@ -128,3 +128,10 @@ dmypy.json
 
 # Pyre type checker
 .pyr
+
+# Idea
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
