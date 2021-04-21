@@ -1,6 +1,6 @@
 # Bayesian NLP
 
-To test the scripts on the dynamic program of Collins & Duffy (2001), you need to place the following data in the respective directory:
+To test any scripts, you need to create a new folder "data" in the main directory and place a .txt document inside.
 
 https://polybox.ethz.ch/index.php/s/fWkfVbSmas7lqEU (war_and_peace_short.txt)
 
