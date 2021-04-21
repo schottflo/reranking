@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='bayesian-nlp',
+setup(name='spankernel',
       version='1.0',
       description='Algorithms for Bayesian NLP',
       author=['Florian Schottmann'],

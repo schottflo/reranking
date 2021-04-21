@@ -46,9 +46,12 @@ def generate_random_parse_trees(num_trees=2, corpus_file="war_and_peace_short.tx
     :param corpus_file: str
     :return: list of nltk.Trees
     """
-    # Build the a grammar based on the corpus
-    grammar = GrammarModel(PATH + "\\" + corpus_file, 3)
+    # Construct the path to the data relative to the current location
+    dir_path_list = PATH.split(sep="\\")
+    dir_path = "\\".join(dir_path_list[:(len(dir_path_list) - 1)])
 
+    # Build the a grammar based on the corpus
+    grammar = GrammarModel(dir_path + "\\data\\" + corpus_file, 3)
     print("Grammar created\n")
 
     # Define reference sentence for sentence generator

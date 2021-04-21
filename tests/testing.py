@@ -1,9 +1,9 @@
 import time
 import unittest
 
-import brute_force
-import dynamic_program
-import parse_tree_gen
+from spankernel import brute_force
+from spankernel import dynamic_program
+from spankernel import parse_tree_gen
 from nltk import ParentedTree
 
 def test_two_trees(t1, t2):
