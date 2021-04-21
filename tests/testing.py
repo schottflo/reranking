@@ -1,8 +1,8 @@
 import time
 import unittest
 
-from spankernel import brute_force
-from spankernel import dynamic_program
+from spankernel import cd_brute_force
+from spankernel import cd_dynamic_program
 from spankernel import parse_tree_gen
 from nltk import ParentedTree
 
@@ -18,13 +18,13 @@ def test_two_trees(t1, t2):
     # Compute number of matching trees with the dynamic program and measure time
     print("\n---Matching trees---")
     start_dp = time.time()
-    res_dp = dynamic_program.compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+    res_dp = cd_dynamic_program.compute_num_matching_subtrees_dp(t1=t1, t2=t2)
     end_dp = time.time()
 
     # Compute number of matching trees naively and measure time
     print("\n--- Expected matching trees ---")
     start_naive = time.time()
-    res_naive = brute_force.compute_num_matching_subtrees_naive(t1=t1, t2=t2)
+    res_naive = cd_brute_force.compute_num_matching_subtrees_naive(t1=t1, t2=t2)
     end_naive = time.time()
 
     print("\n")
