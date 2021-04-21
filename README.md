@@ -1,9 +1,6 @@
 # Bayesian NLP
 
-To test the DP of Collins & Duffy (2001), I implemented a parse tree generator, which creates a grammar from a corpus and then generates random sentences (and consequently parse trees). Thus, the testing does not rely on hand-constructed examples anymore.
+To test the scripts on the dynamic program of Collins & Duffy (2001), you need to place the following data in the respective directory:
 
-Required libraries: 
+https://polybox.ethz.ch/index.php/s/fWkfVbSmas7lqEU (war_and_peace_short.txt)
 
-NLTK - can be installed via pip
-
-cfgen - https://github.com/williamgilpin/cfgen (incl. pyStatparser)
