@@ -56,7 +56,7 @@ def inside_outside(R_w, R_A):
     for k in range(W):
         for A in range(N):
             alpha_w[A, k] += alpha1[A, k, k+1] # terminal constituents
-    return alpha_w, alpha_A, alpha1
+    return [beta, [alpha_w, alpha_A, alpha1]]
 
 if __name__ == '__main__':
     sent = "The man eats fish"
