@@ -1,6 +1,6 @@
 from nltk import ParentedTree
 
-def compute_num_matching_subtrees_dp(t1, t2, show_DP_table=False):
+def compute_num_matching_subtrees_dp(t1, t2, lamb=0.5, show_DP_table=False):
     """
     Given two trees (in CNF), this function returns the number of matching subtrees.
 
@@ -57,11 +57,11 @@ def compute_num_matching_subtrees_dp(t1, t2, show_DP_table=False):
                             DP_table_val_2 = DP_table[(child_2, pos_child_2_t1, pos_child_2_t2)]
 
                             # Formula by Collins & Duffy (2001)
-                            DP_table[(node_t1, pos_t1, pos_t2)] += (1 + DP_table_val_1) * (1 + DP_table_val_2)
+                            DP_table[(node_t1, pos_t1, pos_t2)] += lamb * (1 + DP_table_val_1) * (1 + DP_table_val_2)
 
                         else:
                             # Formula by Collins & Duffy (2001)
-                            DP_table[(node_t1, pos_t1, pos_t2)] += (1 + DP_table_val_1)
+                            DP_table[(node_t1, pos_t1, pos_t2)] += lamb * (1 + DP_table_val_1)
 
     if show_DP_table:
         print(DP_table)
