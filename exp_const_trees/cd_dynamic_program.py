@@ -44,7 +44,7 @@ if __name__ == "__main__":
     np.random.seed(42)
 
     # Load true parses
-    trees = np.load("true_parses_new.npy", allow_pickle=True)
+    trees = np.load("true_parses.npy", allow_pickle=True)
 
     vals = []
     times = []
