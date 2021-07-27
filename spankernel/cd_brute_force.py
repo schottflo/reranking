@@ -6,7 +6,7 @@ def _extract_all_subtrees(tree):
     Extract all possible subtrees according to the definition in Collins and Duffy (2001).
 
     :param tree: nltk.Tree
-    :return: list of lists of nltk.Trees
+    :return: tuple of lists of nltk.Trees
     """
     subtrees = []
 
