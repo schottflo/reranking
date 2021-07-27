@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
-setup(name='spankernel',
+setup(name='parsing',
       version='1.0',
-      description='Algorithms for Bayesian NLP',
+      description='Methods for Reranking Parse Tree',
       author=['Florian Schottmann'],
       url='https://github.com/schottflo/bayesian-nlp',
       install_requires=[
@@ -10,6 +10,8 @@ setup(name='spankernel',
           'nltk',
           'pyStatParser',
           'cfgen',
+          'autograd',
+          'stanza'
       ],
       packages=find_packages(),
       )
