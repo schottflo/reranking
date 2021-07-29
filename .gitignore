@@ -171,3 +171,6 @@ dmypy.json
 # modules.xml
 # .idea/misc.xml 
 # *.ipr 
+
+## Folders
+parsing/other/
