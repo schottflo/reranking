@@ -4,8 +4,7 @@ from autograd import grad
 from random import seed
 from scipy.spatial.distance import squareform
 
-from tree import Node, Production, ConstituencyTree
-from cd_dynamic_program import compute_num_matching_subtrees_dp
+from parsing.algorithms.cd_const_dynamic_program import compute_num_matching_subtrees_dp
 
 from GPy.kern.src.kern import Kern
 from GPy.core import Param
@@ -38,7 +37,7 @@ class Custom_GPY(Kern):
         """
         n = X.shape[0]
 
-        if X2 is None: # Symmetric case
+        if X2 is None:  # Symmetric case
 
             # Compute the upper triangular values
             vec = np.empty(shape=n * (n - 1) // 2)
@@ -65,7 +64,7 @@ class Custom_GPY(Kern):
             # Combine the C&D matrix with the embeddings matrix
             K = CD + self.E_symm
 
-        else: # Non-symmetric case
+        else:  # Non-symmetric case
 
             n2 = X2.shape[0]
 
@@ -121,7 +120,7 @@ class Custom_GPY(Kern):
             k = 0
             for i in range(n - 1):
                 for j in range(i + 1, n):
-                    vec[k] = part_deriv(X[i, 0], X[j, 0], self.lamb*1)
+                    vec[k] = part_deriv(X[i, 0], X[j, 0], self.lamb * 1)
                     k += 1
 
             # Create a symmetric matrix from the upper triangular values (still has 0's on the main diagonal)
@@ -130,7 +129,7 @@ class Custom_GPY(Kern):
             # Compute the main diagonal
             dlambda_diag = np.empty(n)
             for i in range(n):
-                dlambda_diag[i] = part_deriv(X[i, 0], X[i, 0], self.lamb*1)
+                dlambda_diag[i] = part_deriv(X[i, 0], X[i, 0], self.lamb * 1)
 
             # Add the main diagonal to get the final derivative
             dlambda = dlambda + np.diag(dlambda_diag)
@@ -147,7 +146,7 @@ class Custom_GPY(Kern):
             dlambda = np.empty((n, n2))
             for i in range(n):
                 for j in range(n2):
-                    dlambda[i, j] = part_deriv(X[i, 0], X2[j, 0], self.lamb*1)
+                    dlambda[i, j] = part_deriv(X[i, 0], X2[j, 0], self.lamb * 1)
 
             # Compute dL/demb_scale
             dE = self.E_asymm / self.emb_scale
@@ -169,7 +168,8 @@ def fit_and_predict_gp(X_train, X_test, y_train, y_test):
     :return: tuple of float
     """
     # Set up the kernel and fit the model with the best parameters from an optimized model on 50 samples
-    kernel = Custom_GPY(input_dim=X_train.shape[1],lamb=0.5122493885645022, e=0.019017003926375585) # average values from optimized model on 50 observations
+    kernel = Custom_GPY(input_dim=X_train.shape[1], lamb=0.5122493885645022,
+                        e=0.019017003926375585)  # average values from optimized model on 50 observations
     gp_model = GPClassification(X=X_train, Y=y_train.reshape(-1, 1), kernel=kernel)
 
     print("Model fitted; Sampling starts now")
@@ -178,4 +178,4 @@ def fit_and_predict_gp(X_train, X_test, y_train, y_test):
     latent_function_samples = gp_model.posterior_samples_f(X=X_test, size=100).reshape((X_test.shape[0], 100))
     pred = gp_model.likelihood.gp_link.transf(latent_function_samples)
 
-    return np.mean(pred, axis=1) # compute the empirical average of these probabilities
+    return np.mean(pred, axis=1)  # compute the empirical average of these probabilities

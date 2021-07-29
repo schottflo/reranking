@@ -1,5 +1,5 @@
-from cd_dynamic_program import compute_num_matching_subtrees_dp
-from tree import Node, Production, ConstituencyTree
+from parsing.algorithms.cd_const_dynamic_program import compute_num_matching_subtrees_dp
+
 from scipy.spatial.distance import squareform
 
 from random import seed
@@ -9,6 +9,7 @@ from sklearn.svm import SVC
 
 seed(42)
 np.random.seed(42)
+
 
 def CustomKernel(X, X2=None, lamb=1, emb_scale=0.01):
     """
@@ -87,5 +88,4 @@ def fit_and_predict_svm(X_train, X_test, y_train, params):
     # Predict on the test set
     y_dec = model.decision_function(gram_test)
 
-    return 1 / (1 + np.exp(-y_dec)) # Turn into a probabilitiy
-
+    return 1 / (1 + np.exp(-y_dec))  # Turn into a probabilitiy

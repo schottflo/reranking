@@ -1,5 +1,5 @@
 from collections import defaultdict
-from parsing.dep_trees.helpers.algorithm_helpers import extract_all_subgraphs, build_dep_dict, extract_edges, compare_labels
+from parsing.dep_tree_models.helpers.algorithm_helpers import extract_all_subgraphs, build_dep_dict, extract_edges, compare_labels
 
 
 def compute_num_matching_subgraphs_naive(t1, t2):
@@ -32,7 +32,7 @@ def compute_num_matching_subgraphs_naive(t1, t2):
 
 if __name__ == "__main__":
 
-    from parsing.dep_trees.helpers.test_helpers import parse_sentences
+    from parsing.dep_tree_models.helpers.test_helpers import parse_sentences
 
     sentence_1 = "Hello my dear friend, Mel ." # The comma changes the grammatical relationship
     sentence_2 = "Hello my dear friend Ricardo ."

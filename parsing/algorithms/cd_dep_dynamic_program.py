@@ -46,7 +46,7 @@ def compute_num_matching_subgraphs_dp(t1, t2, lamb=1, show_DP_table=False):
 
 if __name__ == "__main__":
 
-    from parsing.dep_trees.helpers.test_helpers import convert_to_custom_data_structure, parse_sentences
+    from parsing.dep_tree_models.helpers.test_helpers import convert_to_custom_data_structure, parse_sentences
 
     sentence_1 = "Hello my dear friend, Mel ."  # The comma changes the grammatical relationship
     sentence_2 = "Hello my dear friend Ricardo ."

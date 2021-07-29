@@ -2,7 +2,7 @@ from stanza import Pipeline
 from nltk.parse.dependencygraph import DependencyGraph
 
 from parsing.data_structures.dep_tree import Node, Arc, DependencyTree
-from parsing.dep_trees.helpers.algorithm_helpers import build_dep_dict, build_pos_to_address
+from parsing.dep_tree_models.helpers.algorithm_helpers import build_dep_dict, build_pos_to_address
 
 
 def convert_to_custom_data_structure(dep_graph):

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def ece(y_true, y_pred_prob, num_bins=10):
     """
     Compute the expected calibration error of a classifier.
@@ -21,7 +22,6 @@ def ece(y_true, y_pred_prob, num_bins=10):
     prob_bins = []
 
     for max_prob in intervals:
-
         # Find the index of the relevant probabilities for each interval
         inds = [ind for ind, prob in enumerate(y_pred_prob) if prob <= max_prob]
 
@@ -137,7 +137,6 @@ def old_ece(y_true, y_pred, y_pred_conf, num_bins=10):
 
     intervals = [i / num_bins for i in range(1, num_bins + 1)]
     for max_prob in intervals:
-
         # Gather the predictions of a given interval
         interval_ind = [ind for ind, prob in enumerate(y_pred_conf) if prob <= max_prob]
 
@@ -158,7 +157,6 @@ def old_ece(y_true, y_pred, y_pred_conf, num_bins=10):
     # Compute the ECE
     total = 0
     for ind in range(num_bins):
-
         accuracy = np.sum(np.array(true_bins[ind]) == np.array(pred_bins[ind]))
         confidence = np.sum(np.array(conf_bins[ind]))
         total += 1 / n * np.abs(accuracy - confidence)
@@ -227,6 +225,7 @@ def old_constituent_f1(y_true, y_pred_prob, X_test, num_sentences, num_cands):
 
     return np.dot(sent_len, f1) / sum(sent_len)  # Weighted average according to sentence length
 
+
 if __name__ == "__main__":
-    print(ece(y_true=[0,0,1,0,0], y_pred_prob=[0.1,0.3,0.5,0.6,0.4]))
-    print(old_ece(y_true=[0,0,1,0,0], y_pred=[0,0,1,1,0], y_pred_conf=[0.9,0.7,0.5,0.6,0.6]))
+    print(ece(y_true=[0, 0, 1, 0, 0], y_pred_prob=[0.1, 0.3, 0.5, 0.6, 0.4]))
+    print(old_ece(y_true=[0, 0, 1, 0, 0], y_pred=[0, 0, 1, 1, 0], y_pred_conf=[0.9, 0.7, 0.5, 0.6, 0.6]))

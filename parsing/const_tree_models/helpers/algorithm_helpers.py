@@ -1,5 +1,5 @@
-from collections import defaultdict
-from nltk import Tree, ParentedTree
+from nltk import Tree
+
 
 def _extract_all_subtrees(tree):
     """
@@ -10,7 +10,7 @@ def _extract_all_subtrees(tree):
     """
     subtrees = []
 
-    if tree.height() == 2: # Base case: pre-terminals (smallest trees), just add the tree itself
+    if tree.height() == 2:  # Base case: pre-terminals (smallest trees), just add the tree itself
         subtrees.append(tree)
         return subtrees, subtrees
 
@@ -58,6 +58,7 @@ def _extract_all_subtrees(tree):
 
         return add_subtrees, subtrees
 
+
 def extract_all_subtrees(tree):
     """
     Wrapper function for _extract_all_subtrees that only returns the final subtrees list.
@@ -66,38 +67,3 @@ def extract_all_subtrees(tree):
     :return: list of nltk.Trees
     """
     return _extract_all_subtrees(tree)[1]
-
-def compute_num_matching_subtrees_naive(t1, t2):
-    """
-    Return the number of matching subtrees and the matching subtrees themselves by enumerating all subtrees and
-    comparing them one by one.
-
-    :param subtrees1: nltk.Tree
-    :param subtrees2: nltk.Tree
-    :return: int
-    """
-    subtrees1 = extract_all_subtrees(t1)
-    subtrees2 = extract_all_subtrees(t2)
-
-    matching_subtrees = defaultdict(int)
-    for s1 in subtrees1:
-        for s2 in subtrees2:
-            if s1 == s2:
-                matching_subtrees[str(s1)] += 1
-
-    count = sum(matching_subtrees.values())
-
-    # Alternative bit of code for runtime comparisons (since it doesn't keep track which subtrees matched)
-    # count = 0
-    # for s1 in subtrees1:
-    #     for s2 in subtrees2:
-    #         if s1 == s2:
-    #             count += 1
-
-    print(matching_subtrees)
-    return count
-
-if __name__ == "__main__":
-    t1 = ParentedTree.fromstring("(S (NP (Conj but) (NP (D the) (N house))) (VP (V wounded) (NP (Conj and) (NP (D the) (NP (N flower) (NP (Conj and) (NP (mod both) (N head))))))))")
-    t2 = ParentedTree.fromstring("(S (NP (D the) (N contempt)) (VP (V puckered) (NP (AdjP (D a) (Adj hairy)) (PP (IN that) (N envoy)))))")
-    print(compute_num_matching_subtrees_naive(t1, t2))

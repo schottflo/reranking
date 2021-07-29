@@ -1,10 +1,11 @@
-import time
-import unittest
-
-from spankernel import cd_brute_force
-from spankernel import cd_dynamic_program
-from spankernel import parse_tree_gen
+import time, unittest
 from nltk import ParentedTree
+
+from parsing.algorithms.cd_const_brute_force import compute_num_matching_subtrees_naive
+from parsing.algorithms.cd_const_dynamic_program import compute_num_matching_subtrees_dp
+
+from parsing.const_tree_models.data_generator import transform_nltk_tree
+
 
 def test_two_trees(t1, t2):
     """
@@ -16,15 +17,17 @@ def test_two_trees(t1, t2):
     :return: tuple of int
     """
     # Compute number of matching trees with the dynamic program and measure time
+    t1_custom, t2_custom = transform_nltk_tree(tree=t1), transform_nltk_tree(tree=t2)
+
     print("\n---Matching trees---")
     start_dp = time.time()
-    res_dp = cd_dynamic_program.compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+    res_dp = compute_num_matching_subtrees_dp(t1=t1_custom, t2=t2_custom, show_DP_table=True)
     end_dp = time.time()
 
     # Compute number of matching trees naively and measure time
     print("\n--- Expected matching trees ---")
     start_naive = time.time()
-    res_naive = cd_brute_force.compute_num_matching_subtrees_naive(t1=t1, t2=t2)
+    res_naive = compute_num_matching_subtrees_naive(t1=t1, t2=t2)
     end_naive = time.time()
 
     print("\n")
@@ -34,10 +37,14 @@ def test_two_trees(t1, t2):
 
     return res_dp, res_naive
 
+
 class TestNumSubtrees(unittest.TestCase):
 
     def random_trees(self):
-        t1, t2 = parse_tree_gen.generate_random_parse_trees(num_trees=2)
+
+        from parsing.const_tree_models.helpers.testing_helpers import generate_two_parse_trees
+
+        t1, t2 = generate_two_parse_trees()
         res_dp, res_naive = test_two_trees(t1=t1, t2=t2)
 
         self.assertEqual(res_dp, res_naive, f"Should be {res_naive}")

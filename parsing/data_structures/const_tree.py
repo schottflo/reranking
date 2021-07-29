@@ -1,4 +1,3 @@
-
 class Node:
 
     def __init__(self, symbol, pos):
@@ -93,5 +92,3 @@ class ConstituencyTree(list):#list):
                 terminals.append(prod.tail[0])
 
         return terminals
-
-

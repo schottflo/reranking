@@ -1,4 +1,3 @@
-from tree import Node, Production, ConstituencyTree
 import autograd.numpy as np
 import time
 
@@ -41,27 +40,16 @@ def compute_num_matching_subtrees_dp(t1, t2, lamb=1, show_DP_table=False):
 
 if __name__ == "__main__":
 
-    np.random.seed(42)
+    from parsing.const_tree_models.data_generator import transform_nltk_tree
+    from nltk import ParentedTree
 
-    # Load true parses
-    trees = np.load("true_parses.npy", allow_pickle=True)
+    t1 = transform_nltk_tree(tree=ParentedTree.fromstring("(S (NP (D the) (N man)) (VP (V eats) (NP fish)))"))
+    t2 = transform_nltk_tree(tree=ParentedTree.fromstring("(S (NP (D the) (N woman)) (VP (V cooks) (NP meat)))"))
 
-    vals = []
-    times = []
+    start = time.time()
+    res = compute_num_matching_subtrees_dp(t1=t1, t2=t2)
+    end = time.time()
 
-    for _ in range(1):
-
-        # Choose two random trees
-        t1, t2 = np.random.choice(trees, size=2)
-
-        # Compute the needed time for one comparison
-        start = time.time()
-        t = compute_num_matching_subtrees_dp(t1, t2, lamb=1)
-        end = time.time()
-
-        times.append(end - start)
-        vals.append(t)
-
-    print(vals)
-    print(times)
+    print(res)
+    print("Time", end-start)
 

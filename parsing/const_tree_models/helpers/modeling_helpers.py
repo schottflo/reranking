@@ -1,7 +1,7 @@
 from random import seed
 
 import numpy as np
-from eval_metrics import ece, constituent_f1
+from parsing.const_tree_models.eval_metrics import ece, constituent_f1
 
 from sklearn.metrics import roc_auc_score, average_precision_score
 
@@ -19,7 +19,8 @@ def extract_sentences(data, sent_inds):
     """
     true_parses, parses, embeddings = data
 
-    return [true_parses[ind] for ind in sent_inds], [parses[ind] for ind in sent_inds], [embeddings[ind] for ind in sent_inds]
+    return [true_parses[ind] for ind in sent_inds], [parses[ind] for ind in sent_inds], [embeddings[ind] for ind in
+                                                                                         sent_inds]
 
 
 def prepare_dataset(data, sent_inds):
@@ -41,8 +42,8 @@ def prepare_dataset(data, sent_inds):
     y = np.empty(shape=dataset_len)
 
     # Initialize the feature matrix
-    embedding_length = embeddings_ind[0].shape[0] # ASSUMPTION: All embeddings have the same length
-    X = np.empty(shape=(dataset_len, embedding_length + 1), dtype=object) # +1 for the trees
+    embedding_length = embeddings_ind[0].shape[0]  # ASSUMPTION: All embeddings have the same length
+    X = np.empty(shape=(dataset_len, embedding_length + 1), dtype=object)  # +1 for the trees
 
     ind = 0
     for sent_ind in range(len(true_parses_ind)):
@@ -59,7 +60,7 @@ def prepare_dataset(data, sent_inds):
         for cand_parse_ind in range(num_cand_parses):
             y[ind + cand_parse_ind + 1] = 0
             X[ind + cand_parse_ind + 1, 0] = parses_ind[sent_ind][cand_parse_ind]
-            X[ind + cand_parse_ind + 1, 1:] = embedding # Embedding is the same for the candidates
+            X[ind + cand_parse_ind + 1, 1:] = embedding  # Embedding is the same for the candidates
 
         ind += num_cand_parses + 1
 

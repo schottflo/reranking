@@ -1,14 +1,14 @@
 import numpy as np
 
+from nltk import Nonterminal, induce_pcfg
 from nltk.corpus import treebank
-from nltk import Nonterminal, ChartParser
-from nltk import induce_pcfg
 from nltk.tree import Tree
 from nltk.parse import pchart
 
 from sentence_transformers import SentenceTransformer
 
-from tree import Node, Production, ConstituencyTree
+from parsing.data_structures.const_tree import Node, Production, ConstituencyTree
+
 
 def build_grammar_from_treebank():
     """
@@ -68,7 +68,7 @@ def generate_parse_trees_and_embeddings():
     # Initialize the lists
     num_sentences = len(sentences)
 
-    true_parses = [] # it can't be known in advance how many true_parses there will be (bec. only the ones with at least 5 cand parses are considered)
+    true_parses = []  # it can't be known in advance how many true_parses there will be (bec. only the ones with at least 5 cand parses are considered)
     parses = []
     embeddings = []
 
@@ -80,11 +80,12 @@ def generate_parse_trees_and_embeddings():
         count = 0
 
         # Take the c worst parses
-        for ind, parse in enumerate(reversed(list(parser.parse(sentences[sent_ind])))):  # Reversing the list very expensive, maybe can pop
+        for ind, parse in enumerate(
+                reversed(list(parser.parse(sentences[sent_ind])))):  # Reversing the list very expensive, maybe can pop
             if count > (c - 1):
                 break
             if parse != true_parse:
-                cand_parses.append(Tree.convert(tree=parse)) # Convert probabilistic tree into tree
+                cand_parses.append(Tree.convert(tree=parse))  # Convert probabilistic tree into tree
                 count += 1
 
         if len(cand_parses) == c:  # Checks if there are 5 candidate parses (could be more flexible maybe)
@@ -94,7 +95,7 @@ def generate_parse_trees_and_embeddings():
             print(sentences[sent_ind])
 
             # True parses and embeddings
-            true_parses.append(true_parse) #true_parses.append(true_parse)
+            true_parses.append(true_parse)  # true_parses.append(true_parse)
             embeddings.append(model.encode("".join(sentences[sent_ind])))
 
             # Candidate parses for the given observation
@@ -116,14 +117,15 @@ def set_up_pos_to_span_dict(tree):
     # Initialize with pre terminals
     for ind in range(len(tree.leaves())):
         pos = tree.leaf_treeposition(ind)
-        pos_to_span[pos] = None # Terminals don't have a span
-        pos_to_span[pos[:(len(pos) - 1)]] = (ind, ind + 1) # Pre-terminal spans
+        pos_to_span[pos] = None  # Terminals don't have a span
+        pos_to_span[pos[:(len(pos) - 1)]] = (ind, ind + 1)  # Pre-terminal spans
 
     # Go through the rest of the tree bottom up to derive the correct span
     for pos in tree.treepositions(order="postorder"):
 
-        subtree = tree[pos] # Extract the subtree at that position
-        if not isinstance(subtree, str) and len(subtree.productions()[0].rhs()) > 1:  # excludes terminals (with str condition) and pre terminals
+        subtree = tree[pos]  # Extract the subtree at that position
+        if not isinstance(subtree, str) and len(
+                subtree.productions()[0].rhs()) > 1:  # excludes terminals (with str condition) and pre terminals
 
             left = pos + (0,)
             right = pos + (1,)
@@ -137,35 +139,45 @@ def set_up_pos_to_span_dict(tree):
     return pos_to_span
 
 
+def transform_nltk_tree(tree):
+    """
+    Transform a nltk.Tree into a ConstituencyTree.
+
+    :param tree: nltk.Tree
+    :return: ConstituencyTree
+    """
+    pos_to_span = set_up_pos_to_span_dict(tree)  # Extract the dictionary mapping nltk positions to spans
+
+    prods = []
+    for pos in tree.treepositions(order="postorder"):  # Go through productions bottom-up
+
+        subtree = tree[pos]
+
+        if not isinstance(subtree, str):  # excludes terminals
+
+            prod = subtree.productions()[0]  # to get the actual production
+
+            # Transform into new production
+            prod_new = Production(start=Node(symbol=str(prod.lhs()), pos=pos_to_span[pos]),
+                                  end=[Node(symbol=str(symb), pos=pos_to_span[pos + (ind,)]) for ind, symb in
+                                       enumerate(prod.rhs())])
+
+            prods.append(prod_new)
+
+    return ConstituencyTree(prods)
+
+
 def transform_nltk_trees(trees):
     """
     Transform a list of nltk trees into ConstituencyTrees.
 
-    :param trees: np.array of nltk trees
-    :return: list of ConstituencyTrees
+    :param trees: np.array of nltk.Trees
+    :return: np.array of ConstituencyTrees
     """
     new_trees = np.empty(shape=len(trees), dtype=object)
 
     for ind, tree in enumerate(trees):
-
-        pos_to_span = set_up_pos_to_span_dict(tree) # Extract the dictionary mapping nltk positions to spans
-
-        prods = []
-        for pos in tree.treepositions(order="postorder"): # Go through productions bottom-up
-
-            subtree = tree[pos]
-
-            if not isinstance(subtree, str): # excludes terminals
-
-                prod = subtree.productions()[0] # to get the actual production
-
-                # Transform into new production
-                prod_new = Production(start=Node(symbol=str(prod.lhs()), pos=pos_to_span[pos]),
-                                      end=[Node(symbol=str(symb), pos=pos_to_span[pos + (ind,)]) for ind, symb in enumerate(prod.rhs())])
-
-                prods.append(prod_new)
-
-        new_trees[ind] = ConstituencyTree(productions=prods)
+        new_trees[ind] = transform_nltk_tree(tree=tree)
 
     return new_trees
 
@@ -192,6 +204,7 @@ def save_data():
     np.save("embeddings.npy", embeddings)
 
     print("Files successfully saved")
+
 
 if __name__ == "__main__":
     save_data()
