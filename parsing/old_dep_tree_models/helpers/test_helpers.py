@@ -1,18 +1,21 @@
 from stanza import Pipeline
 from nltk.parse.dependencygraph import DependencyGraph
+from nltk.tree import Tree
 
 from parsing.data_structures.dep_tree import Node, Arc, DependencyTree
-from parsing.dep_tree_models.helpers.algorithm_helpers import build_dep_dict, build_pos_to_address
+from parsing.old_dep_tree_models.helpers.algorithm_helpers import build_dep_dict, build_pos_to_address
 
 
-def convert_to_custom_data_structure(dep_graph):
+def convert_to_custom_data_structure(dep_graph, conllu_str=None):
     """
     Convert the nltk.DependencyGraph to a (custom) DependencyTree
 
     :param dep_graph: nltk.DependencyGraph
     :return:
     """
-    dep_tree = dep_graph.tree()
+    # dep_tree = dep_graph.tree()
+
+    dep_tree = Tree("ROOT", [dep_graph.tree()])
 
     # Build dictionary mapping arcs to labels
     arc_to_dep = build_dep_dict(dep_graph=dep_graph)
@@ -37,7 +40,7 @@ def convert_to_custom_data_structure(dep_graph):
 
             arcs.append(new_arc)
 
-    return DependencyTree(arcs)
+    return DependencyTree(arcs, conllu_str)
 
 
 def parse_stanza_output(sent):
@@ -64,6 +67,6 @@ def parse_sentences(sent_1, sent_2):
     parsed_sents = [DependencyGraph(parse_stanza_output(sent), top_relation_label="root") for doc in documents for sent in doc.sentences]
 
     for parsed_sent in parsed_sents:
-        parsed_sent.tree().pretty_print()
+        Tree("ROOT", [parsed_sent.tree()]).pretty_print()
 
     return parsed_sents

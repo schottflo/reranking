@@ -33,7 +33,7 @@ def address_tree(dep_graph):
     address = str(node["address"])
     deps = sorted(chain.from_iterable(node["deps"].values()))
 
-    return Tree(address, [_address_tree(dep_graph, dep) for dep in deps])
+    return Tree(str(0), [Tree(address, [_address_tree(dep_graph, dep) for dep in deps])])#Tree(address, [_address_tree(dep_graph, dep) for dep in deps])
 
 
 def build_pos_to_address(dep_graph, dep_tree):
@@ -45,7 +45,6 @@ def build_pos_to_address(dep_graph, dep_tree):
     :param dep_tree: nltk.Tree
     :return: dict
     """
-
     ad_tree = address_tree(dep_graph=dep_graph)
 
     pos_to_address = {}
@@ -159,7 +158,9 @@ def extract_all_subgraphs(dep_graph):
     :param dep_graph: nltk.DependenyGraph
     :return: list of nltk.Tree
     """
-    tree = dep_graph.tree()
+    #tree = dep_graph.tree()
+    tree = Tree("ROOT", [dep_graph.tree()])
+
 
     # Build global dictionary mapping from nltk positions in the tree to addresses
     pos_to_address = build_pos_to_address(dep_graph=dep_graph, dep_tree=tree)
@@ -198,6 +199,10 @@ def build_dep_dict(dep_graph):
     for triple in new_triples(dep_graph=dep_graph):
         head, dep_rel, child = triple
         arc_to_dep[(head, child)] = dep_rel
+
+    # Also append the root relation
+    node = dep_graph.root
+    arc_to_dep[(('ROOT', 0), (node["word"], node["address"]))] = 'root'
 
     return arc_to_dep
 
