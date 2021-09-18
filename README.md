@@ -39,3 +39,5 @@ The other files are named after the baselines/models they reproduce
 * **GPs:** compute_gold_gps.py (Experiment 1), compute_gps.py (Experiment 2), conf_reranking.py (Experiment 3)
 
 Note that conf_reranking.py requires that compute_gps.py was run before.
+
+All GP computations were run on Euler, the high performance computing cluster of ETH. Reproducibility can only be ensured when rerunning the scripts there.
