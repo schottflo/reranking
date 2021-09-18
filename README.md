@@ -8,10 +8,10 @@ which are not mentioned in our work.
 
 ## Installation
 
-Make sure that Python 3.7 is installed. Then run the following commands:
+Make sure that Python 3.7 is installed. Moreover, we use [spanningtrees](https://github.com/rycolab/spanningtrees), please install it as well. Then run the following commands:
 
 ```
-git clone https://github.com/schottflo/bayesian-nlp
+git clone https://github.com/schottflo/reranking
 cd parsing
 pip install -e .
 ```
@@ -34,7 +34,7 @@ python oracle_stats.py
 to create a pre-processed version of the data and all statistics that are not based on the computations of a model.
 The other files are named after the baselines/models they reproduce
 
-* **Baselines:** baselines.py
+* **Baselines:** baseline_predictions.py
 * **SVMs:** svms.py (Experiment 2, Experiment 3)
 * **GPs:** compute_gold_gps.py (Experiment 1), compute_gps.py (Experiment 2), conf_reranking.py (Experiment 3)
 
