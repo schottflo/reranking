@@ -1,5 +1,5 @@
 from collections import defaultdict
-from parsing.new_dep_tree_models.helpers.algorithm_helpers import extract_all_subgraphs, build_dep_dict, extract_edges, compare_labels
+from parsing.dep_tree_models.helpers.algorithm_helpers import extract_all_subgraphs, build_dep_dict, extract_edges, compare_labels
 
 
 def compute_num_matching_subgraphs_naive(t1, t2):

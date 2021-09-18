@@ -3,7 +3,7 @@ import time, unittest
 from parsing.algorithms.cd_dep_brute_force import compute_num_matching_subgraphs_naive
 from parsing.algorithms.cd_dep_dynamic_program import compute_num_matching_subgraphs_dp
 
-from parsing.new_dep_tree_models.helpers.test_helpers import convert_to_custom_data_structure, parse_sentences
+from parsing.dep_tree_models.helpers.test_helpers import convert_to_custom_data_structure, parse_sentences
 
 
 def test_two_dependency_trees(t1, t2):
