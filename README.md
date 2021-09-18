@@ -22,7 +22,7 @@ pip install -e .
 In order to reproduce the results from the thesis, place an additional directory "data" inside "dep_tree_models".
 You can find the directory at the following link with a password that should have been provided to you:
 
-https://polybox.ethz.ch/index.php/s/75Cx5QooS4bDUBm
+https://polybox.ethz.ch/index.php/s/opfMLVmB8rX5lgn
 
 Otherwise, please maintain the structure of the directory as it is. Then run
 
