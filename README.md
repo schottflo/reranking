@@ -8,7 +8,7 @@ which are not mentioned in our work.
 
 ## Installation
 
-Make sure that Python 3.7 is installed. Moreover, we use [spanningtrees](https://github.com/rycolab/spanningtrees). When installing spanningtrees, the authors had trouble installing the dependency "arsenal", but it is not necessary for our code. In case you experience difficulties as well, just remove it from the setup.py file from spanningtrees, before running pip install -e.
+Make sure that Python 3.7 is installed. Moreover, our code relies on the library [spanningtrees](https://github.com/rycolab/spanningtrees). It needs to be installed manually by following the instructions in the repo. When installing spanningtrees, the authors had trouble installing the dependency "arsenal", but it is not necessary for our code. In case you experience difficulties as well, just remove it from the setup.py file from spanningtrees, before running pip install -e.
 
 After spanningtrees is installed, run the following command to install the dependencies:
 
