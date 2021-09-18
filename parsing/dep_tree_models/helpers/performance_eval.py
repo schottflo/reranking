@@ -156,17 +156,17 @@ def compare_performance(lang, X_train, y_train, eval_set, max_k, kernel, interna
 
         #Save to be safe
         if include_gold_tree:
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_las_scores_{eval_set}_{internal_seed}_gold.npy"), las_scores)
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_uas_scores_{eval_set}_{internal_seed}_gold.npy"), uas_scores)
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_clas_scores_{eval_set}_{internal_seed}_gold.npy"),clas_scores)
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_emp_stanz_ratios_{eval_set}_{internal_seed}_gold.npy"),
+            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{eval_set}/{lang}_las_scores_{eval_set}_{internal_seed}_gold.npy"), las_scores)
+            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{eval_set}/{lang}_uas_scores_{eval_set}_{internal_seed}_gold.npy"), uas_scores)
+            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{eval_set}/{lang}_clas_scores_{eval_set}_{internal_seed}_gold.npy"),clas_scores)
+            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{eval_set}/{lang}_emp_stanz_ratios_{eval_set}_{internal_seed}_gold.npy"),
                     empirical_stanza_ratios)
 
         else:
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_las_scores_{eval_set}_{internal_seed}.npy"), las_scores)
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_uas_scores_{eval_set}_{internal_seed}.npy"), uas_scores)
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_clas_scores_{eval_set}_{internal_seed}.npy"),clas_scores)
-            np.save(str(BASE_FOLDER / f"gps/gold/{lang}/{kernel}/{lang}_emp_stanz_ratios_{eval_set}_{internal_seed}.npy"),
+            np.save(str(BASE_FOLDER / f"gps/non_gold/{lang}/{kernel}/{eval_set}/{lang}_las_scores_{eval_set}_{internal_seed}.npy"), las_scores)
+            np.save(str(BASE_FOLDER / f"gps/non_gold/{lang}/{kernel}/{eval_set}/{lang}_uas_scores_{eval_set}_{internal_seed}.npy"), uas_scores)
+            np.save(str(BASE_FOLDER / f"gps/non_gold/{lang}/{kernel}/{eval_set}/{lang}_clas_scores_{eval_set}_{internal_seed}.npy"),clas_scores)
+            np.save(str(BASE_FOLDER / f"gps/non_gold/{lang}/{kernel}/{eval_set}/{lang}_emp_stanz_ratios_{eval_set}_{internal_seed}.npy"),
                     empirical_stanza_ratios)
 
     return las_scores, uas_scores, clas_scores, empirical_stanza_ratios
