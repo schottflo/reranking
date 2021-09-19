@@ -263,11 +263,8 @@ def experiment_3_3(max_k):
 
 
 if __name__ == "__main__":
-    #experiment_1(lang="lt_hse", eval_set="test", num_seeds=5, max_k=15)
-
-    # experiment_2(eval_set="dev", num_seeds=5, max_k=15)
-
-    # experiment_3_1(lang="lt_hse", eval_set="test", num_seeds=5, max_k=15)
-    # experiment_3_1(lang="mr_ufal", eval_set="test", num_seeds=5, max_k=15)
-
+    experiment_1(lang="lt_hse", eval_set="test", num_seeds=5, max_k=15)
+    experiment_2(eval_set="dev", num_seeds=5, max_k=15)
+    experiment_3_1(lang="lt_hse", eval_set="test", num_seeds=5, max_k=15)
+    experiment_3_1(lang="mr_ufal", eval_set="test", num_seeds=5, max_k=15)
     experiment_3_2(max_k=15)

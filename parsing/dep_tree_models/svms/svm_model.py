@@ -217,7 +217,7 @@ def optimize_and_predict_with_svm(lang, kernel, incl_gold, predict_for_every_k=F
     elif kernel == "augm_cd":
         gram_train = CustomKernel(X=X_train, lamb=0.7012455615069223, emb_scale=0.8847221539035289)
 
-    path_folder = BASE_FOLDER / f"{lang}/{kernel}"
+    path_folder = BASE_FOLDER / f"svms/{lang}/{kernel}"
     path_folder.mkdir(parents=True, exist_ok=True)
 
     path = path_folder / f"{lang}_svm_hyp_search_gold{incl_gold}.npy"
