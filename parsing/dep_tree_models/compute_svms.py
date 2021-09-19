@@ -7,14 +7,18 @@ import numpy as np
 
 def compute_svms():
 
-    combinations = list(product(["augm_cd", "cd"], ["lt_hse", "be_hse", "mr_ufal", "ta_ttb"]))
+    BASE_FOLDER = Path.cwd()
+
+    combinations = list(product(["augm_cd", "cd"], ["lt_hse", "mr_ufal", "ta_ttb", "be_hse"]))
 
     # Set up folder structure
     for kernel, lang in combinations:
-        path_folder = Path.cwd() / f"{lang}/{kernel}"
+        path_folder = BASE_FOLDER / f"svms/{lang}/{kernel}"
         path_folder.mkdir(parents=True, exist_ok=True)
 
-    res = Parallel(n_jobs=len(combinations))(
+    # Sometime there were difficulties with the treebanks when running the code in parallel
+    # If it does not work, try to run the code on one core
+    res = Parallel(n_jobs=8)(
             delayed(optimize_and_predict_with_svm)(lang=lang, kernel=kernel, incl_gold=False)
             for kernel, lang in combinations)
 
