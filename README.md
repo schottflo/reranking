@@ -28,6 +28,7 @@ https://polybox.ethz.ch/index.php/s/opfMLVmB8rX5lgn
 Otherwise, please maintain the structure of the directory as it is. Then run
 
 ```
+cd parsing/dep_tree_models
 python file_generator.py 
 python oracle_stats.py
 ```
