@@ -36,7 +36,7 @@ python oracle_stats.py
 to create a pre-processed version of the data and all statistics that are not based on the computations of a model.
 The other files are named after the baselines/models they reproduce
 
-* **Baselines:** baseline_predictions.py
+* **Baselines:** baseline_predictions.py (Experiment 2)
 * **SVMs:** svms.py (Experiment 2)
 * **GPs:** compute_gold_gps.py (Experiment 1), compute_gps.py (Experiment 2), conf_reranking.py (Experiment 3)
 
