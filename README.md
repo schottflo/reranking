@@ -4,7 +4,7 @@
 
 This repo contains the code for my master thesis project at RycoLab at ETH Zurich. Apart from the code that produces the results in the thesis,
 it contains the code to more experiments that we have conducted during the project. For example there is a folder on constituency tree rerankers,
-which are not mentioned in our work.
+which are not mentioned in the thesis.
 
 ## Installation
 
