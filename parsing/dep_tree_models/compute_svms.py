@@ -16,8 +16,8 @@ def compute_svms():
         path_folder = BASE_FOLDER / f"svms/{lang}/{kernel}"
         path_folder.mkdir(parents=True, exist_ok=True)
 
-    # Sometime there were difficulties with the treebanks when running the code in parallel
-    # If it does not work, try to run the code on one core
+    # Sometimes there were difficulties with the treebanks when running the code in parallel
+    # If it does not work, try to run the code on one core sequentially
     res = Parallel(n_jobs=8)(
             delayed(optimize_and_predict_with_svm)(lang=lang, kernel=kernel, incl_gold=False)
             for kernel, lang in combinations)

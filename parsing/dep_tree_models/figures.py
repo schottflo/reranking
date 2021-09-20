@@ -91,20 +91,20 @@ def experiment_1(lang, eval_set, num_seeds, max_k):
     sb.lineplot(x=k_vec, y=oracle_las)
     sb.lineplot(x=k_vec, y=random_baseline, color="violet")
     s2.axhline(baseline, ls='--', color="red")
-    s2.set(ylabel="LAS", ylim=(-1, 101))
+    s2.set(ylabel="LAS", ylim=(-1, 101), xlabel="Test k")
     s2.set_xticks(xticks)
     s2.legend(labels=["GP RR C&D Kernel incl gold", "GP RR Augm C&D Kernel incl gold", "Optimal predictions excl. gold candidate", "Random Reranker", "Base Parser"])
 
     plt.show()
 
-def experiment_2(eval_set, num_seeds, max_k):
+def experiment_2(eval_set, kernel, num_seeds, max_k):
 
     data = []
     plot_limits = []
 
     for lang in ["lt_hse", "be_hse", "mr_ufal", "ta_ttb"]:
 
-        k_vec, las_mat, uas_mat, clas_mat, _ = load_results(lang=lang, eval_set=eval_set, num_seeds=num_seeds, max_k=max_k, kernel="augm_cd")
+        k_vec, las_mat, uas_mat, clas_mat, _ = load_results(lang=lang, eval_set=eval_set, num_seeds=num_seeds, max_k=max_k, kernel=kernel)
         print(np.mean(las_mat, axis=1))
         print(np.std(las_mat, axis=1, ddof=1))
 
@@ -147,7 +147,7 @@ def experiment_2(eval_set, num_seeds, max_k):
 
         ax4 = fig.add_subplot(414)
         s4 = sb.lineplot(x="k", y="las", data=data[3], legend="full", ax=ax4)
-        s4.set(ylabel="LAS", ylim=plot_limits[3])
+        s4.set(ylabel="LAS", ylim=plot_limits[3], xlabel="Development k")
         s4.set_title(label="Tamil TTB", fontsize=10)
         s4.set_xticks(xticks)
         s4.legend(labels=["Mean Reranker LAS"])
@@ -188,7 +188,7 @@ def experiment_3_1(lang, eval_set, num_seeds, max_k): # conf_thresh=False
         s1.set_xlabel("k")
         s1.legend(labels=["True BPR", "Emp BPR of GP with C&D kernel",
                           "Emp BPR of GP with Augm C&D kernel",
-                          "Emp BPR of SVM"])
+                          "Emp BPR of SVM with C&D kernel"])
 
     plt.show()
 
@@ -223,12 +223,14 @@ def experiment_3_2(max_k):
         ax1 = fig.add_subplot(121)
         g1 = sb.lineplot(data=stacked_oracles, ax=ax1)
         g1.set_xticks(k_vec)
-        g1.set_ylabel("Growth compared to k=1 in %")
+        g1.set_xlabel("Test k")
+        g1.set_ylabel("Growth of oracle LAS compared to k=1 in %")
         g1.legend(labels=langs)
 
         ax2 = fig.add_subplot(122)
         g = sb.lineplot(data=stacked_gtr, ax=ax2)
         g.set_xticks(k_vec)
+        g.set_xlabel("Test k")
         g.set_ylabel("Gold tree ratio in %")
         g.legend(labels=langs)
 
@@ -264,7 +266,9 @@ def experiment_3_3(max_k):
 
 if __name__ == "__main__":
     experiment_1(lang="lt_hse", eval_set="test", num_seeds=5, max_k=15)
-    experiment_2(eval_set="dev", num_seeds=5, max_k=15)
+    experiment_2(eval_set="dev", kernel="augm_cd", num_seeds=5, max_k=15)
     experiment_3_1(lang="lt_hse", eval_set="test", num_seeds=5, max_k=15)
     experiment_3_1(lang="mr_ufal", eval_set="test", num_seeds=5, max_k=15)
     experiment_3_2(max_k=15)
+
+    experiment_2(eval_set="dev", kernel="cd", num_seeds=5, max_k=15)
